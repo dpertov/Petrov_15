@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Burger </title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<h1> Burger </h1>
+		
+		<script>
+
+			const Cheeseburger = {
+				Size_small: {
+					name: 'Cheeseburger_small',
+				 	roll: 1,
+				 	cutlet: 'Chiken_Standart',
+				 	cheese: 1,
+				 	cucumber: 1,
+				 	ketchup: 1,
+				 	kkal: 250,
+				 	price: 50,
+				 	weight: 200			 	
+				},
+
+				Size_big: {
+					name: 'Cheeseburger_big',
+				 	roll: 1,
+				 	cutlet: 'Chiken_Double',
+				 	cheese: 2,
+				 	cucumber: 1,
+				 	ketchup: 1,
+				 	kkal: 450,
+				 	price: 100,
+				 	weight: 450				 	
+			 	}
+			} 
+
+			const Hamburger = {
+				Size_small: {
+					name: 'Hamburger_small',
+				 	roll: 1,
+				 	cutlet: 'Beef_Standart',
+				 	cucumber: 1,
+				 	ketchup: 1,
+				 	kkal: 180,	
+				 	price: 60,
+				 	weight: 200				 	
+				},
+
+				Size_big: {
+					name: 'Cheeseburger_big',
+				 	roll: 1,
+				 	cutlet: 'Beef_Double',
+				  	cucumber: 1,
+				 	ketchup: 1,
+				 	kkal: 460,
+				 	price: 120,
+				 	weight: 450			 	
+			 	}
+			} 
+
+			const Topping = {
+
+				mayo: {
+					name: 'mayonnaise',
+					price: 20,
+					kkal: 40,
+					weight: 10
+				},
+
+				ketchup: {
+					name: 'Ketchup',
+					price: 10,
+					kkal: 30,
+					weight: 20
+				},
+
+				salad: {
+					name: 'Salad',
+					price: 5,
+					kkal: 5,
+					weight: 5
+				},
+
+				potato: {
+					name: 'Potato',
+					price: 25,
+					kkal: 45,
+					weight: 15
+				},
+
+			}
+ 
+ 			function Burger (obj) {
+				this.name = obj.name;
+				this.price = obj.price;
+				this.kkal = obj.kkal;
+				this.weight = obj.weight;
+				this.topping = [];
+			}
+
+			Burger.prototype.add_toping = function(burger) {
+				let burger_price = burger.sum_kkal(burger.price)
+				let burger_kkal = burger.sum_kkal(burger.kkal);
+				
+				for (let i = 1; i < arguments.length; i++) {
+	  				  burger.name += ' + ' + arguments[i].name; 
+	  				  burger.kkal = burger_kkal(arguments[i].kkal);
+	  				  burger.price = burger_price(arguments[i].price);
+	  				  burger.topping.push(arguments[i].name);
+ 				}
+			}
+
+			Burger.prototype.remove_toping = function(burger) {
+				let burger_price = burger.sum_kkal(burger.price)
+				let burger_kkal = burger.sum_kkal(burger.kkal);
+				let	burger_name = burger.name.split(' ');
+						
+				for (let i = 1; i < arguments.length; i++) {
+	  				burger.kkal = burger_kkal(-arguments[i].kkal);
+	  				burger.price = burger_price(-arguments[i].price);
+	  				burger.topping.splice(burger.topping.findIndex( (item) => item === arguments[i].name),1);
+	  				burger_name.splice(burger_name.findIndex( (item) => item === arguments[i].name),2);
+	  			}
+	  			burger.name = burger_name.join(' ');
+ 			}
+
+			Burger.prototype.sum_kkal = function (start_price) {
+				let fullPrice = start_price;
+				var secondPrice = 0;
+										
+				function sumIngridient(second_price) { 
+					return fullPrice += second_price;
+				}
+				return sumIngridient;
+			}
+
+
+			const gamburger = new Burger (Cheeseburger.Size_small);
+			const doubleGamburger = new Burger (Cheeseburger.Size_big);
+
+		// Добавляем в гамбургер любые топинги майонез, салат, картофель, кетчуп)
+			gamburger.add_toping (gamburger, Topping.mayo, Topping.salad, Topping.potato, Topping.ketchup);
+			console.log('You Full Burger = ' + gamburger.name + '\n' + 'Full calories = ' + gamburger.kkal + '\n' +
+				'Price = ' + gamburger.price);
+		
+		//удаляем топинги
+				gamburger.remove_toping (gamburger, Topping.salad, Topping.mayo );
+			console.log('You Full Burger  - topping = ' + gamburger.name + '\n' + 'Full calories = ' + gamburger.kkal + '\n' +
+				'Price = ' + gamburger.price);
+
+			</script>
+	</body>
+</html>
